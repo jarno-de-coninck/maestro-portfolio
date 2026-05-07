@@ -1,0 +1,15 @@
+{% extends "partials/base.html.twig" %}
+
+{% set currentRoute = "blog_post" %}
+
+{% block content %}
+    <section id="blog-header" class="text-center" style="margin-top: -3rem;">
+        <h1 class="mt-5 pt-5">{{ blogTitle }}</h1>
+        <h5 id="blog-date">{{ blogSubtitle }}</h5>
+    </section>
+
+    <div class="container mt-4">
+        <a href="/blog"> <- Back to blogs </a>
+        {% block blog_content %}{% endblock %}
+    </div>
+{% endblock %}

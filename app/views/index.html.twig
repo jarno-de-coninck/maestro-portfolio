@@ -1,0 +1,39 @@
+{% extends "partials/base.html.twig" %}
+
+{% set pageTitle = "Home" %}
+{% set currentRoute = "home" %}
+
+{% block content %}
+    <article class="mb-5 mt-4">
+        <h1 class="text-center"> Welcome to My Portfolio</h1>
+        <p class="text-center"> Showing my educational journey </p>
+    </article>
+
+    <article class="d-flex align-center justify-content-between w-75 mx-auto gap-5">
+        <section>
+            <a target="_blank" href="https://www.scalda.nl/">
+                <img src="/images/scalda.jpg" alt="Scalda Gebouw" class="homeImages"/>
+            </a>
+            <h3>Scalda - Former Education</h3>
+            <p>
+                My former education was at Scalda, where I studied Software Engineering. I really enjoyed this because programming allowed me to be creative and see direct results from my work. It gave me a strong foundation in thinking logically and solving problems, and it showed me how rewarding it is to build something useful from scratch, some things I like about coding are:
+            </p>
+            <ul>
+                <li>Seeing progress step by step</li>
+                <li>Making things easier to use</li>
+                <li>Customizing and improving projects</li>
+                <li>Continuously developing my skills</li>
+            </ul>
+        </section>
+
+        <section>
+            <a target="_blank" href="https://hz.nl/">
+                <img src="/images/hz.jpg" alt="HZ Gebouw" class="homeImages"/>
+            </a>
+            <h3>Current education - HZ University of Applied Sciences</h3>
+            <p>
+                I am now studying HBO-ICT at HZ University of Applied Sciences. This education suits me because it goes beyond just learning to code, it focuses on working with real projects, collaborating with others, and exploring new technologies. I like that HZ gives me the freedom to be creative while also preparing me for professional challenges. It motivates me to keep growing, both as a programmer and as a future ICT professional.
+            </p>
+        </section>
+    </article>
+{% endblock %}

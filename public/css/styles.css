@@ -1,0 +1,248 @@
+/* colors and variables */
+:root {
+    --dark-primary: #1e1e1e;
+    --dark-secondary: #2B2B2B;
+    --light-primary: #c0c0c0;
+    --light-secondary: #919191;
+    --color-primary: #ff6b6b;   /* soft, vibrant coral */
+    --color-secondary: #fca048; /* warm mango orange */
+
+    /* glass effect stuff */
+    --glass-bg: rgba(30, 30, 30, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --glass-blur: blur(10px);
+}
+
+/* main body background */
+body {
+    background-color: #1a1a1a !important;
+    background-image: url('/images/background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    min-height: 100vh;
+    flex-direction: column;
+    display: flex;
+}
+
+/* global frosted overlay so i don't have to blur every single box */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background: rgba(15, 15, 15, 0.4);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+}
+
+/* forces main to stretch so the footer stays at the bottom on short pages */
+main {
+    flex: 1;
+}
+
+/* header */
+header {
+    padding-bottom: 5rem;
+}
+
+/* frosted nav */
+nav {
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    z-index: 999;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--light-primary) !important;
+    font-weight: 600;
+}
+
+nav a.active {
+    color: var(--color-primary) !important;
+}
+
+nav a:hover {
+    transition: all .25s;
+    opacity: .75;
+}
+
+/* images */
+.homeImages {
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    width: 100%;
+    height: 300px;
+    border: 2px solid var(--light-secondary);
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.homeImages:hover {
+    transition: all .5s;
+    transform: scale(1.01) rotate(2deg);
+    border-color: var(--color-primary);
+}
+
+#profile-main {
+    width: 90%;
+}
+
+/* reusable glass blocks */
+.profile-block, details, .blog-button {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 15px;
+    box-shadow: var(--glass-shadow);
+}
+
+/* tables */
+table {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--glass-shadow);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* table headers - uses the red color with opacity for glass look */
+thead {
+    background: rgba(255, 79, 79, 0.85);
+    color: white;
+}
+
+thead th {
+    padding: 1rem;
+}
+
+tbody td {
+    padding: 0.9rem;
+    border-bottom: none;
+    font-size: 0.9rem;
+}
+
+tbody tr:first-child td {
+    border-top: 1px solid var(--glass-border);
+}
+
+/* table inputs */
+td input {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--light-primary) !important;
+}
+
+td input:hover {
+    transition: all .5s;
+    transform: scale(1.02);
+    border-color: var(--color-primary) !important;
+}
+
+td input:focus {
+    border-color: var(--color-primary) !important;
+    box-shadow: none !important;
+}
+
+/* custom glass progress bar track */
+.progress {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 15px !important;
+    box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* the moving bar */
+.progress-bar {
+    border-radius: 15px !important;
+    font-weight: 600;
+    transition: width 0.5s ease;
+}
+
+/* red/orange fail color */
+.progress-bar.bg-danger {
+    background-color: var(--color-primary) !important;
+    background-image: linear-gradient(90deg, var(--color-primary), var(--color-secondary)) !important;
+}
+
+/* modern green pass color */
+.progress-bar.bg-success {
+    background-color: #00b058 !important;
+    background-image: linear-gradient(90deg, #00b058, #00d26a) !important;
+}
+
+/* faq animations */
+details:hover {
+    transition: all .5s;
+    transform: scale(1.01);
+    border-color: var(--color-primary) !important;
+}
+
+details[open] {
+    border-color: var(--color-primary) !important;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: .5; }
+    to { opacity: 1; }
+}
+
+a {
+    text-decoration: none !important;
+    color: var(--color-primary) !important;
+}
+
+.blog-button:hover {
+    transition: all .5s;
+    transform: scale(1.01);
+    border-color: var(--color-primary) !important;
+}
+
+.blog-image {
+    width: 40px;
+    object-fit: cover;
+}
+
+/* glass footer locked to bottom of the page content */
+#main-aside {
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-top: 1px solid var(--glass-border);
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+    margin-top: auto;
+}
+
+#main-aside a {
+    color: rgb(168, 168, 168) !important;
+}
+
+#main-aside a:hover {
+    color: var(--color-primary) !important;
+    transition: 0.25s;
+}
+
+/* blog headers */
+#blog-header {
+    background-image: linear-gradient(200deg, var(--color-primary), var(--color-secondary));
+    min-height: 20vh;
+}
+
+#blog-date {
+    color: var(--light-primary);
+}
+
+.blog-images {
+    border: var(--color-primary) 2px solid;
+    border-radius: 15px;
+}
