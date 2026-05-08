@@ -4,8 +4,10 @@
     --dark-secondary: #2B2B2B;
     --light-primary: #c0c0c0;
     --light-secondary: #919191;
-    --color-primary: #ff6b6b;   /* soft, vibrant coral */
-    --color-secondary: #fca048; /* warm mango orange */
+    /*--color-primary: #ff6b6b;   !* soft, vibrant coral *!*/
+    /*--color-secondary: #fca048; !* warm mango orange *!*/
+    --color-primary: #524fff;
+    --color-secondary: rgb(123, 79, 255);
 
     /* glass effect stuff */
     --glass-bg: rgba(30, 30, 30, 0.6);
@@ -17,7 +19,7 @@
 /* main body background */
 body {
     background-color: #1a1a1a !important;
-    background-image: url('/images/background.jpg');
+    background-image: url('/images/background1.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -117,7 +119,7 @@ table {
 
 /* table headers - uses the red color with opacity for glass look */
 thead {
-    background: rgba(255, 79, 79, 0.85);
+    background: var(--color-primary);
     color: white;
 }
 
