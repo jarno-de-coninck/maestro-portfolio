@@ -5,82 +5,27 @@
 
 {% block content %}
     <section class="w-75 mx-auto mt-4">
-        <h1 class="text-center"> Latest blogs </h1>
-        <div class="mt-5 row justify-content-center">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <h1 class="m-0"> Latest blogs </h1>
+            <a href="/blogs/create" class="btn text-white">Write New Blog</a>
+        </div>
 
-            <article class="col-md-7 mb-3">
-                <button onclick="window.location.href='/blogs/first-feedback'"
-                        class="w-100 p-3 blog-button text-start">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="/images/feedback.png" alt="Feedback logo" class="blog-image  me-3 rounded">
-                        <h5 class="mb-0"> First Feedback </h5>
-                    </div>
-                    <p class="mb-0">
-                        This week I received my very first round of feedback on my PCO portfolio assignment, and it
-                        was
-                        a helpful check on what...
-                    </p>
-                </button>
-            </article>
-
-            <article class="col-md-7 mb-3">
-                <button onclick="window.location.href='/blogs/fieldwork-ict'"
-                        class="w-100 p-3 blog-button text-start">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="/images/luau.png" alt="Luau logo" class="blog-image  me-3 rounded">
-                        <h5 class="mb-0"> Game projects </h5>
-                    </div>
-                    <p class="mb-0">
-                        A large part of my coding journey started with Luau, the scripting language of Roblox
-                        Studio.
-                        By experimenting with systems...
-                    </p>
-                </button>
-            </article>
-
-            <article class="col-md-7 mb-3">
-                <button onclick="window.location.href='/blogs/swot-analysis'"
-                        class="w-100 p-3 blog-button text-start">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="/images/swot.png" alt="SWOT logo" class="blog-image  me-3 rounded">
-                        <h5 class="mb-0"> Swot analysis </h5>
-                    </div>
-                    <p class="mb-0">
-                        Strengths
-                        Strong problem-solving mindset and analytical skills,
-                        Organized coding style and attention to detail
-                        Experience with multiple...
-                    </p>
-                </button>
-            </article>
-
-            <article class="col-md-7 mb-3">
-                <button onclick="window.location.href='/blogs/programming-experience'"
-                        class="w-100 p-3 blog-button text-start">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="/images/java.png" alt="Java logo" class="blog-image  me-3 rounded">
-                        <h5 class="mb-0"> Programming experience </h5>
-                    </div>
-                    <p class="mb-0">
-                        My programming journey has taken me through internships, education, and personal projects. Each experience taught me something different whether it was working with...
-                    </p>
-                </button>
-            </article>
-
-            <article class="col-md-7 mb-3">
-                <button onclick="window.location.href='/blogs/study-choice'"
-                        class="w-100 p-3 blog-button text-start">
-                    <div class="d-flex align-items-center mb-2">
-                        <img src="/images/hz-logo.png" alt="HZ logo" class="blog-image  me-3 rounded">
-                        <h5 class="mb-0"> Study choice </h5>
-                    </div>
-                    <p class="mb-0">
-                        After completing my MBO in Software Development, choosing to continue to HBO felt like the natural next step.
-                        My MBO experience gave...
-                    </p>
-                </button>
-            </article>
-
+        <div class="row justify-content-center">
+            {% for blog in blogs %}
+                <article class="col-md-7 mb-3">
+                    <button onclick="window.location.href='/blogs/{{ blog.slug }}'" class="w-100 p-3 blog-button text-start">
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="{{ blog.preview_image }}" alt="Preview" class="blog-image me-3 rounded">
+                            <h5 class="mb-0"> {{ blog.title }} </h5>
+                        </div>
+                        <p class="mb-0 text-muted">
+                            {{ blog.subtitle }}
+                        </p>
+                    </button>
+                </article>
+            {% else %}
+                <p class="text-center">No blogs found.</p>
+            {% endfor %}
         </div>
     </section>
 {% endblock %}

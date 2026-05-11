@@ -1,0 +1,17 @@
+{% extends "blogs/base.twig" %}
+
+{% set pageTitle = blog.title %}
+{% set blogTitle = blog.title %}
+{% set blogSubtitle = blog.subtitle %}
+
+{% block blog_content %}
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-10">
+            {% if blog.header_image %}
+                <img src="{{ blog.header_image }}" alt="Header">
+            {% endif %}
+
+            {{ blog.content|raw }}
+        </div>
+    </div>
+{% endblock %}

@@ -4,8 +4,7 @@
     --dark-secondary: #2B2B2B;
     --light-primary: #c0c0c0;
     --light-secondary: #919191;
-    /*--color-primary: #ff6b6b;   !* soft, vibrant coral *!*/
-    /*--color-secondary: #fca048; !* warm mango orange *!*/
+
     --color-primary: #524fff;
     --color-secondary: rgb(123, 79, 255);
 
@@ -28,7 +27,7 @@ body {
     display: flex;
 }
 
-/* global frosted overlay so i don't have to blur every single box */
+/* global frosted overlay so i dont have to blur every single box */
 body::before {
     content: "";
     position: fixed;
@@ -99,11 +98,11 @@ nav a:hover {
 }
 
 /* reusable glass blocks */
-.profile-block, details, .blog-button {
-    background: var(--glass-bg);
+.profile-block, details, .blog-button, .btn, input, textarea {
+    background: var(--glass-bg) !important;
     border: 1px solid var(--glass-border) !important;
     border-radius: 15px;
-    box-shadow: var(--glass-shadow);
+    box-shadow: var(--glass-shadow) !important;
 }
 
 /* tables */
@@ -204,7 +203,7 @@ a {
     color: var(--color-primary) !important;
 }
 
-.blog-button:hover {
+.blog-button:hover, .btn:hover {
     transition: all .5s;
     transform: scale(1.01);
     border-color: var(--color-primary) !important;

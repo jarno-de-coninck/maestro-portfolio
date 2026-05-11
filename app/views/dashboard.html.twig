@@ -3,220 +3,95 @@
 {% set pageTitle = "Dashboard" %}
 {% set currentRoute = "dashboard" %}
 
-{% block extra_css %}
-    <style>
-        tbody + tbody {
-            border-top: 2px solid #495057;
-        }
-
-        tbody tr:first-child td:first-child {
-            font-weight: bold;
-        }
-    </style>
-{% endblock %}
-
 {% block content %}
+    {% set total_ec = 0 %}
+    {% for grade in grades %}
+        {% if grade.grade >= 5.5 %}
+            {% set total_ec = total_ec + grade.ec %}
+        {% endif %}
+    {% endfor %}
+
+    {% set display_ec = total_ec > 60 ? 60 : total_ec %}
+    {% set percentage = (display_ec / 60) * 100 %}
+    {% set bar_color = total_ec >= 45 ? 'bg-success' : 'bg-danger' %}
+
+    {% set progress_note = '' %}
+    {% if total_ec >= 60 %}
+        {% set progress_note = 'Propedeuse achieved! 🎉' %}
+    {% elseif total_ec >= 45 %}
+        {% set progress_note = 'Safe! You met the NBSA boundary.' %}
+    {% else %}
+        {% set progress_note = 'You need ' ~ (45 - total_ec) ~ ' more EC to reach the NBSA boundary.' %}
+    {% endif %}
+
     <section class="w-75 mx-auto mb-5 mt-4">
         <label class="form-label">Study Progress (EC)</label>
         <div class="progress" style="height:28px;">
-            <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                 aria-valuemax="60">
-                0 / 60 EC
+            <div class="progress-bar {{ bar_color }}" role="progressbar"
+                 style="width: {{ percentage }}%;"
+                 aria-valuenow="{{ total_ec }}" aria-valuemin="0" aria-valuemax="60">
+                {{ total_ec }} / 60 EC
             </div>
         </div>
         <div class="d-flex justify-content-between mt-1">
             <p class="text-warning">NBSA boundary = 45 EC</p>
-            <p id="progress-note" class="text-muted"></p>
+            <p class="text-muted">{{ progress_note }}</p>
         </div>
     </section>
 
     <article class="w-100 d-flex justify-content-center mb-5">
-        <table class="w-75">
-            <thead>
-            <tr>
-                <th>Course</th>
-                <th>Grade</th>
-                <th>EC</th>
-                <th>Project</th>
-                <th>Quarter</th>
-                <th>Status</th>
-            </tr>
-            </thead>
+        <form method="POST" action="/dashboard" class="w-75">
+            <div class="d-flex justify-content-end mb-3">
+                <button type="submit" class="btn text-white" style="background-color: var(--color-primary); border: none;">Save Grades</button>
+            </div>
 
-            <tbody>
-            <tr>
-                <td>Program & Career Orientation</td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">2.5</td>
-                <td>Portfolio website (Presentation)</td>
-                <td>Quarter 1</td>
-                <td>Ungraded</td>
-            </tr>
-            </tbody>
+            <table class="w-100">
+                <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Grade</th>
+                    <th>EC</th>
+                    <th>Project</th>
+                    <th>Quarter</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
 
-            <tbody>
-            <tr>
-                <td>Computer Science Basics</td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">5</td>
-                <td>Written knowledge test</td>
-                <td>Quarter 1</td>
-                <td>Ungraded</td>
-            </tr>
-            </tbody>
+                {% set current_course = '' %}
 
-            <tbody>
-            <tr>
-                <td>Programming Basics</td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">5</td>
-                <td>Written knowledge test</td>
-                <td>Quarter 1</td>
-                <td>Ungraded</td>
-            </tr>
-            </tbody>
+                {% for grade in grades %}
+                    {% if grade.course_name != current_course %}
+                        {% if not loop.first %}</tbody>{% endif %}
+                        <tbody>
+                        {% set current_course = grade.course_name %}
+                        {% set first_in_course = true %}
+                    {% else %}
+                        {% set first_in_course = false %}
+                    {% endif %}
 
-            <tbody>
-            <tr>
-                <td>IT Personality</td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">2.5</td>
-                <td>Portfolio</td>
-                <td>Quarter 2 - 4</td>
-                <td>Ungraded</td>
-            </tr>
-            </tbody>
+                    <tr>
+                        <td>{{ first_in_course ? grade.course_name : '' }}</td>
+                        <td>
+                            <input type="number" name="grades[{{ grade.id }}]" class="form-control grade" value="{{ grade.grade }}" min="0" max="10" step="0.1" style="width: 80px;">
+                        </td>
+                        <td class="ec">{{ grade.ec }}</td>
+                        <td>{{ grade.test_name }}</td>
+                        <td>{{ first_in_course ? grade.quarter : '' }}</td>
 
-            <tbody>
-            <tr>
-                <td>Object Oriented Programming</td>
-                <td></td>
-                <td class="ec"></td>
-                <td></td>
-                <td>Quarter 2</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">5</td>
-                <td>Presentation (group)</td>
-                <td></td>
-                <td>Ungraded</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">5</td>
-                <td>Written knowledge test</td>
-                <td></td>
-                <td>Ungraded</td>
-            </tr>
-            </tbody>
+                        <td>
+                            {% if grade.grade >= 5.5 %}
+                                <span class="text-success fw-bold">Passed</span>
+                            {% elseif grade.grade > 0 %}
+                                <span class="text-danger fw-bold">Failed</span>
+                            {% else %}
+                                <span class="text-muted">Ungraded</span>
+                            {% endif %}
+                        </td>
+                    </tr>
 
-            <tbody>
-            <tr>
-                <td>Framework Project 1</td>
-                <td></td>
-                <td class="ec"></td>
-                <td></td>
-                <td>Quarter 3</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">4</td>
-                <td>Written knowledge test</td>
-                <td></td>
-                <td>Ungraded</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">1</td>
-                <td>Database exam</td>
-                <td></td>
-                <td>Ungraded</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">2.5</td>
-                <td>Group presentation</td>
-                <td></td>
-                <td>Ungraded</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">2.5</td>
-                <td>Individual requirements</td>
-                <td></td>
-                <td>Ungraded</td>
-            </tr>
-            </tbody>
-
-            <tbody>
-            <tr>
-                <td>Business IT Consultancy Basics</td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">2.5</td>
-                <td>Assignment</td>
-                <td>Quarter 3 - 4</td>
-                <td>Ungraded</td>
-            </tr>
-            </tbody>
-
-            <tbody>
-            <tr>
-                <td>Framework Project 2</td>
-                <td></td>
-                <td class="ec"></td>
-                <td></td>
-                <td>Quarter 4</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">2.5</td>
-                <td>Final delivery</td>
-                <td></td>
-                <td>Ungraded</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">2.5</td>
-                <td>Report assessment</td>
-                <td></td>
-                <td>Ungraded</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">5</td>
-                <td>IT Dev Portfolio</td>
-                <td></td>
-                <td>Ungraded</td>
-            </tr>
-            </tbody>
-
-            <tbody>
-            <tr>
-                <td>Personal Professional Development Exploration</td>
-                <td><input type="number" class="form-control grade" value="0" min="0" max="10" step="0.1"></td>
-                <td class="ec">12.5</td>
-                <td>Criterion - referenced assessment</td>
-                <td>Quarter 1 - 4</td>
-                <td>Ungraded</td>
-            </tr>
-            </tbody>
-        </table>
+                    {% if loop.last %}</tbody>{% endif %}
+                {% endfor %}
+            </table>
+        </form>
     </article>
-{% endblock %}
-
-{% block extra_js %}
-    <script src="/js/dashboard.js"></script>
 {% endblock %}

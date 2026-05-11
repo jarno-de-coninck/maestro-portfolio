@@ -1,0 +1,38 @@
+{% extends "partials/base.html.twig" %}
+
+{% set pageTitle = "Create Blog" %}
+
+{% block content %}
+    <div class="w-50 mx-auto mt-5 profile-block p-4">
+        <h2 class="mb-4">Write a New Blog Post</h2>
+
+        <form method="POST" action="/blogs">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="subtitle" class="form-label">Subtitle</label>
+                <input type="text" class="form-control" id="subtitle" name="subtitle" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="preview_image" class="form-label">Preview Image URL</label>
+                <input type="text" class="form-control" id="preview_image" name="preview_image" placeholder="Preview image URL" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="header_image" class="form-label">Header Image URL</label>
+                <input type="text" class="form-control" id="header_image" name="header_image" placeholder="Header image URL" >
+            </div>
+
+            <div class="mb-4">
+                <label for="content" class="form-label">Content</label>
+                <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" style="background-color: var(--color-primary); border: none;">Publish Post</button>
+        </form>
+    </div>
+{% endblock %}

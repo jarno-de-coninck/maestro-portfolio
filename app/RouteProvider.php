@@ -16,10 +16,13 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET', '/', [$homeController, "index"]);
         $router->addRoute('GET', '/profile', [$homeController, "profile"]);
         $router->addRoute('GET', '/dashboard', [$homeController, "dashboard"]);
+        $router->addRoute('POST', '/dashboard', [$homeController, "updateDashboard"]);
         $router->addRoute('GET', '/faq', [$homeController, "faq"]);
 
         $blogController = $container->get(BlogController::class);
         $router->addRoute('GET', '/blog', [$blogController, "index"]);
+        $router->addRoute('GET', '/blogs/create', [$blogController, "create"]);
+        $router->addRoute('POST', '/blogs', [$blogController, "store"]);
         $router->addRoute('GET', '/blogs/(?<slug>[a-zA-Z0-9-]+)', [$blogController, "show"]);
     }
 }
