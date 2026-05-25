@@ -40,10 +40,9 @@ class HomeController
         $gradesData = $_POST['grades'] ?? [];
 
         foreach ($gradesData as $id => $gradeValue) {
-            /** @var Grade $grade */
             $grade = $this->gradeRepository->findById((int)$id);
 
-            if ($grade !== null) {
+            if ($grade instanceof Grade) {
                 $grade->grade = (float)$gradeValue;
                 $this->gradeRepository->update($grade);
             }

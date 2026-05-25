@@ -35,6 +35,9 @@ class BlogRepository extends AbstractRepository implements BlogRepositoryInterfa
             return null;
         }
 
+        /**
+         * @var Blog
+         */
         return $this->fromDBRow($row);
     }
 }

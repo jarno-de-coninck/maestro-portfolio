@@ -9,22 +9,28 @@ class Database
 {
     private PDO $connection;
 
-    public function __construct(string $name)
-    {
-        $this->connection = new PDO("sqlite:" . $name);
+    public function __construct(
+        string $host = 'db',
+        string $db = 'maindb',
+        string $user = 'user',
+        string $pass = 'root'
+    ) {
+        $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+
+        $this->connection = new PDO($dsn, $user, $pass);
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
-        $this->connection->exec('PRAGMA foreign_keys = ON;');
+        $this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     }
 
-    public function query(string $query): PDOStatement | false
+    public function query(string $query): PDOStatement|false
     {
         return $this->connection->query($query);
     }
 
     /**
      * @param string $sql
-     * @param mixed[]|null $params
+     * @param array<string|int, mixed>|null $params
      * @return PDOStatement
      */
     public function run(string $sql, array|null $params = null): PDOStatement

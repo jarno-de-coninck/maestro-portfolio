@@ -28,6 +28,11 @@ class BlogController
     public function show(Request $request): Response
     {
         $slug = $request->get('slug');
+
+        if ($slug === null) {
+            return $this->responseFactory->notFound();
+        }
+
         $blog = $this->blogRepository->findBySlug($slug);
 
         if (!$blog) {
@@ -51,7 +56,7 @@ class BlogController
         $blog->preview_image = $request->get('preview_image') ?? '/images/hz-logo.png';
         $blog->header_image = $request->get('header_image') ?? '';
 
-        $baseSlug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $blog->title)));
+        $baseSlug = strtolower(trim((string) preg_replace('/[^A-Za-z0-9-]+/', '-', $blog->title)));
         $slug = $baseSlug;
         $counter = 2;
 

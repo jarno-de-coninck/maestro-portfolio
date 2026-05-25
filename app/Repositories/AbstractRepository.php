@@ -31,26 +31,19 @@ abstract class AbstractRepository
      */
     private function getColumnNames(string $tableName): array
     {
-        $query = "SELECT name FROM sqlite_master " .
-            "WHERE type = 'table' AND name NOT LIKE 'sqlite_%';";
-
+        $query = "SHOW TABLES LIKE '$tableName'";
         $statement = $this->database->run($query);
-        $tables = [];
 
-        foreach ($statement as $row) {
-            $tables[] = $row->name;
-        }
-
-        if (!in_array($tableName, $tables, true)) {
+        if (!$statement->fetch()) {
             throw new Exception("Table named $tableName does not exist");
         }
 
-        $infoQuery = "SELECT name FROM pragma_table_info('$tableName')";
+        $infoQuery = "SHOW COLUMNS FROM `$tableName`";
         $stmt = $this->database->run($infoQuery);
 
         $columnNames = [];
         foreach ($stmt as $row) {
-            $columnNames[] = $row->name;
+            $columnNames[] = $row->Field;
         }
 
         return $columnNames;

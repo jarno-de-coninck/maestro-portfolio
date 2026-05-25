@@ -1,0 +1,32 @@
+name: CI Checks
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  quality-assurance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run PHPCS
+        run: vendor/bin/phpcs --standard=phpcs.xml
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse -c phpstan.neon
+
+      - name: Run Deptrac
+        run: vendor/bin/deptrac analyse --config-file=deptrac.yaml
