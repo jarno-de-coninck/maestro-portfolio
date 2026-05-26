@@ -23,7 +23,7 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Run PHPCBF
-        run: ./vendor/bin/phpcbf --standard=psr12 /app/
+        run: ./vendor/bin/phpcbf --standard=psr12 ./app/
 
       - name: Run PHPCS
         run: vendor/bin/phpcs --standard=phpcs.xml
