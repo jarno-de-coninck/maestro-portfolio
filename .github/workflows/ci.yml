@@ -1,13 +1,11 @@
-name: CI Checks
+name: CI Pipeline
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
-  quality-assurance:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,14 +20,21 @@ jobs:
       - name: Install Dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: Run PHPCBF
-        run: ./vendor/bin/phpcbf --standard=psr12 ./app/
+      - name: Run PHPStan
+        run: php maestro phpstan
 
       - name: Run PHPCS
-        run: vendor/bin/phpcs --standard=phpcs.xml
-
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyse -c phpstan.neon
+        run: php maestro phpcs
 
       - name: Run Deptrac
-        run: vendor/bin/deptrac analyse --config-file=deptrac.yaml
+        run: php maestro deptrac
+
+      - name: Install Railway CLI
+        if: success()
+        run: npm i -g @railway/cli
+
+      - name: Deploy to Railway
+        if: success()
+        run: railway up --detach
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
