@@ -10,6 +10,6 @@ interface GradeRepositoryInterface
      * @return Grade[]
      */
     public function all(): array;
-    public function findById(int $id): ?Object;
+    public function findById(int $id): ?object;
     public function update(Grade $grade): void;
 }
