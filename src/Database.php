@@ -10,12 +10,19 @@ class Database
     private PDO $connection;
 
     public function __construct(
-        string $host = 'db',
-        string $db = 'maindb',
-        string $user = 'user',
-        string $pass = 'root'
+        ?string $host = null,
+        ?string $db = null,
+        ?string $user = null,
+        ?string $pass = null,
+        ?string $port = null
     ) {
-        $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
+        $host = $host ?? getenv('MYSQLHOST') ?: 'db';
+        $db = $db ?? getenv('MYSQLDATABASE') ?: 'maindb';
+        $user = $user ?? getenv('MYSQLUSER') ?: 'user';
+        $pass = $pass ?? getenv('MYSQLPASSWORD') ?: 'root';
+        $port = $port ?? getenv('MYSQLPORT') ?: '3306';
+
+        $dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
 
         $this->connection = new PDO($dsn, $user, $pass);
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
