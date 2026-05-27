@@ -1,12 +1,13 @@
 FROM php:8.2-apache
 
-RUN a2dismod mpm_event mpm_worker || true
-RUN a2enmod mpm_prefork rewrite
-
 RUN apt-get update && apt-get install -y \
     unzip \
     git \
     default-mysql-client
+
+RUN rm -f /etc/apache2/mods-enabled/mpm_worker.load \
+    && rm -f /etc/apache2/mods-enabled/mpm_event.load \
+    && a2enmod mpm_prefork rewrite
 
 RUN docker-php-ext-install pdo pdo_mysql
 
