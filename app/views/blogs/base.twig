@@ -4,7 +4,12 @@
 
 {% block content %}
     <section id="blog-header" class="text-center" style="margin-top: -3rem;">
-        <h1 class="mt-5 pt-5">{{ blogTitle }}</h1>
+        <h1 class="mt-5 pt-5">
+            {{ blogTitle }}
+            {% if blogPublished is defined and not blogPublished %}
+                <span class="badge bg-warning text-dark ms-2 align-middle" style="font-size: 0.5em;">Draft</span>
+            {% endif %}
+        </h1>
         <h5 id="blog-date">{{ blogSubtitle }}</h5>
     </section>
 

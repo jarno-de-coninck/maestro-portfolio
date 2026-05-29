@@ -1,0 +1,17 @@
+{% extends "partials/base.html.twig" %}
+
+{% set pageTitle = "Delete Blog" %}
+
+{% block content %}
+    <div class="w-50 mx-auto mt-5 profile-block p-4 text-center glass-text">
+        <h2 class="mb-4">Delete Blog Post</h2>
+        
+        <p>Are you sure you want to delete the blog post <strong class="text-white">"{{ blog.title }}"</strong>?</p>
+        <p class="text-danger">This action cannot be undone.</p>
+
+        <form method="POST" action="/blogs/{{ blog.slug }}/delete" class="mt-4">
+            <button type="submit" class="btn btn-glass-danger me-2">Yes, Delete Post</button>
+            <a href="/blogs/{{ blog.slug }}" class="btn btn-glass-secondary">Cancel</a>
+        </form>
+    </div>
+{% endblock %}

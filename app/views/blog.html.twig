@@ -7,7 +7,7 @@
     <section class="w-75 mx-auto mt-4">
         <div class="d-flex justify-content-between align-items-center mb-5">
             <h1 class="m-0"> Latest blogs </h1>
-            <a href="/blogs/create" class="btn text-white">Write New Blog</a>
+            <a href="/blogs/create" class="btn btn-glass-primary">Write New Blog</a>
         </div>
 
         <div class="row justify-content-center">
@@ -16,7 +16,12 @@
                     <button onclick="window.location.href='/blogs/{{ blog.slug }}'" class="w-100 p-3 blog-button text-start">
                         <div class="d-flex align-items-center mb-2">
                             <img src="{{ blog.preview_image }}" alt="Preview" class="blog-image me-3 rounded">
-                            <h5 class="mb-0"> {{ blog.title }} </h5>
+                            <h5 class="mb-0"> 
+                                {{ blog.title }} 
+                                {% if not blog.published %}
+                                    <span class="badge bg-warning text-dark ms-2" style="font-size: 0.7em;">Draft</span>
+                                {% endif %}
+                            </h5>
                         </div>
                         <p class="mb-0 text-muted">
                             {{ blog.subtitle }}

@@ -1,57 +1,46 @@
-/* colors and variables */
 :root {
     --dark-primary: #1e1e1e;
-    --dark-secondary: #2B2B2B;
+    --dark-secondary: #2b2b2b;
     --light-primary: #c0c0c0;
     --light-secondary: #919191;
 
     --color-primary: #524fff;
-    --color-secondary: rgb(123, 79, 255);
+    --color-secondary: #7b4fff;
 
-    /* glass effect stuff */
     --glass-bg: rgba(30, 30, 30, 0.6);
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    --glass-blur: blur(10px);
 }
 
-/* main body background */
 body {
-    background-color: #1a1a1a !important;
+    background-color: #1a1a1a;
     background-image: url('/images/background1.png');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
     min-height: 100vh;
-    flex-direction: column;
     display: flex;
+    flex-direction: column;
 }
 
-/* global frosted overlay so i dont have to blur every single box */
 body::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    inset: 0;
     z-index: -1;
     background: rgba(15, 15, 15, 0.4);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-/* forces main to stretch so the footer stays at the bottom on short pages */
 main {
     flex: 1;
 }
 
-/* header */
 header {
     padding-bottom: 5rem;
 }
 
-/* frosted nav */
 nav {
     background: var(--glass-bg);
     backdrop-filter: blur(5px);
@@ -63,20 +52,19 @@ nav {
 
 nav a {
     text-decoration: none;
-    color: var(--light-primary) !important;
+    color: var(--light-primary);
     font-weight: 600;
+    transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 nav a.active {
-    color: var(--color-primary) !important;
+    color: var(--color-primary);
 }
 
 nav a:hover {
-    transition: all .25s;
-    opacity: .75;
+    opacity: 0.75;
 }
 
-/* images */
 .homeImages {
     margin-bottom: 1rem;
     border-radius: 10px;
@@ -85,10 +73,10 @@ nav a:hover {
     border: 2px solid var(--light-secondary);
     object-fit: cover;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .homeImages:hover {
-    transition: all .5s;
     transform: scale(1.01) rotate(2deg);
     border-color: var(--color-primary);
 }
@@ -97,15 +85,24 @@ nav a:hover {
     width: 90%;
 }
 
-/* reusable glass blocks */
-.profile-block, details, .blog-button, .btn, input, textarea {
-    background: var(--glass-bg) !important;
-    border: 1px solid var(--glass-border) !important;
+.profile-block, details, .blog-button, .btn, input:not([type="checkbox"]), textarea {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
     border-radius: 15px;
-    box-shadow: var(--glass-shadow) !important;
+    box-shadow: var(--glass-shadow);
 }
 
-/* tables */
+.form-check-input {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
 table {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -116,7 +113,6 @@ table {
     border-spacing: 0;
 }
 
-/* table headers - uses the red color with opacity for glass look */
 thead {
     background: var(--color-primary);
     color: white;
@@ -136,77 +132,78 @@ tbody tr:first-child td {
     border-top: 1px solid var(--glass-border);
 }
 
-/* table inputs */
 td input {
-    background-color: rgba(0, 0, 0, 0.2) !important;
-    border: 1px solid var(--glass-border) !important;
-    color: var(--light-primary) !important;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    color: var(--light-primary);
+    transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 td input:hover {
-    transition: all .5s;
     transform: scale(1.02);
-    border-color: var(--color-primary) !important;
+    border-color: var(--color-primary);
 }
 
 td input:focus {
-    border-color: var(--color-primary) !important;
-    box-shadow: none !important;
+    border-color: var(--color-primary);
+    box-shadow: none;
+    outline: none;
 }
 
-/* custom glass progress bar track */
 .progress {
-    background: rgba(0, 0, 0, 0.3) !important;
-    border: 1px solid var(--glass-border) !important;
-    border-radius: 15px !important;
-    box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.5) !important;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* the moving bar */
 .progress-bar {
-    border-radius: 15px !important;
+    border-radius: 15px;
     font-weight: 600;
     transition: width 0.5s ease;
 }
 
-/* red/orange fail color */
 .progress-bar.bg-danger {
     background-color: var(--color-primary) !important;
     background-image: linear-gradient(90deg, var(--color-primary), var(--color-secondary)) !important;
 }
 
-/* modern green pass color */
 .progress-bar.bg-success {
     background-color: #00b058 !important;
     background-image: linear-gradient(90deg, #00b058, #00d26a) !important;
 }
 
-/* faq animations */
+details {
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
 details:hover {
-    transition: all .5s;
     transform: scale(1.01);
-    border-color: var(--color-primary) !important;
+    border-color: var(--color-primary);
 }
 
 details[open] {
-    border-color: var(--color-primary) !important;
+    border-color: var(--color-primary);
     animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
-    from { opacity: .5; }
+    from { opacity: 0.5; }
     to { opacity: 1; }
 }
 
 a {
-    text-decoration: none !important;
-    color: var(--color-primary) !important;
+    text-decoration: none;
+    color: var(--color-primary);
+}
+
+.blog-button, .btn {
+    transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .blog-button:hover, .btn:hover {
-    transition: all .5s;
     transform: scale(1.01);
-    border-color: var(--color-primary) !important;
+    border-color: var(--color-primary);
 }
 
 .blog-image {
@@ -214,7 +211,6 @@ a {
     object-fit: cover;
 }
 
-/* glass footer locked to bottom of the page content */
 #main-aside {
     background: var(--glass-bg);
     backdrop-filter: blur(5px);
@@ -225,15 +221,14 @@ a {
 }
 
 #main-aside a {
-    color: rgb(168, 168, 168) !important;
+    color: rgb(168, 168, 168);
+    transition: color 0.2s ease;
 }
 
 #main-aside a:hover {
-    color: var(--color-primary) !important;
-    transition: 0.25s;
+    color: var(--color-primary);
 }
 
-/* blog headers */
 #blog-header {
     background-image: linear-gradient(200deg, var(--color-primary), var(--color-secondary));
     min-height: 20vh;
@@ -244,6 +239,221 @@ a {
 }
 
 .blog-images {
-    border: var(--color-primary) 2px solid;
+    border: 2px solid var(--color-primary);
     border-radius: 15px;
+}
+
+.glass-form {
+    text-align: left;
+    color: var(--light-primary);
+}
+
+.glass-form label,
+.glass-form input,
+.glass-form textarea {
+    color: var(--light-primary);
+}
+
+.glass-form input:focus, .glass-form textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: none;
+    color: var(--light-primary);
+    outline: none;
+}
+
+.btn-glass-primary {
+    background-color: var(--color-primary);
+    border: 1px solid var(--glass-border);
+    color: white;
+}
+
+.btn-glass-primary:hover, .btn-glass-primary:focus {
+    background-color: var(--color-primary);
+    border-color: var(--light-primary);
+    color: white;
+}
+
+.btn-glass-primary:active {
+    background-color: var(--color-secondary) !important;
+    border-color: var(--color-primary) !important;
+    transform: scale(0.98);
+}
+
+.btn-glass-danger {
+    background-color: rgba(220, 53, 69, 0.8);
+    border: 1px solid var(--glass-border);
+    color: white;
+}
+
+.btn-glass-danger:hover, .btn-glass-danger:focus {
+    background-color: rgba(220, 53, 69, 1);
+    border-color: var(--light-primary);
+    color: white;
+}
+
+.btn-glass-danger:active {
+    background-color: #a71d2a !important;
+    border-color: rgba(220, 53, 69, 1) !important;
+    transform: scale(0.98);
+}
+
+.btn-glass-secondary {
+    background-color: var(--dark-secondary);
+    border: 1px solid var(--glass-border);
+    color: white;
+}
+
+.btn-glass-secondary:hover, .btn-glass-secondary:focus {
+    background-color: #3b3b3b;
+    border-color: var(--light-primary);
+    color: white;
+}
+
+.btn-glass-secondary:active {
+    background-color: #1a1a1a !important;
+    border-color: var(--dark-secondary) !important;
+    transform: scale(0.98);
+}
+
+.btn-glass-warning {
+    background-color: rgba(255, 193, 7, 0.8);
+    border: 1px solid var(--glass-border);
+    color: black;
+}
+
+.btn-glass-warning:hover, .btn-glass-warning:focus {
+    background-color: rgba(255, 193, 7, 1);
+    border-color: var(--light-primary);
+    color: black;
+}
+
+.btn-glass-warning:active {
+    background-color: #d39e00 !important;
+    border-color: rgba(255, 193, 7, 1) !important;
+    transform: scale(0.98);
+}
+
+.btn-glass-success {
+    background-color: rgba(25, 135, 84, 0.8);
+    border: 1px solid var(--glass-border);
+    color: white;
+}
+
+.btn-glass-success:hover, .btn-glass-success:focus {
+    background-color: rgba(25, 135, 84, 1);
+    border-color: var(--light-primary);
+    color: white;
+}
+
+.btn-glass-success:active {
+    background-color: #146c43 !important;
+    border-color: rgba(25, 135, 84, 1) !important;
+    transform: scale(0.98);
+}
+
+/* Also ensure standard Bootstrap buttons don't lose their background entirely if used */
+.btn-primary {
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--color-secondary) !important;
+    border-color: var(--color-secondary) !important;
+}
+
+.btn-danger {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+}
+
+.btn-danger:hover, .btn-danger:focus {
+    background-color: #b02a37 !important;
+    border-color: #b02a37 !important;
+}
+
+.blog-actions-footer {
+    border-top: 1px solid var(--glass-border);
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    text-align: right;
+}
+
+.glass-text {
+    color: var(--light-primary);
+}
+
+/* Quill Editor Overrides */
+.ql-toolbar, .ql-container {
+    border-color: var(--glass-border) !important;
+}
+
+.ql-toolbar {
+    border-radius: 10px 10px 0 0;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.ql-container {
+    border-radius: 0 0 10px 10px;
+}
+
+.ql-editor {
+    min-height: 200px;
+    color: var(--light-primary);
+}
+
+.ql-snow .ql-stroke {
+    stroke: var(--light-primary) !important;
+}
+
+.ql-snow .ql-fill, .ql-snow .ql-stroke.ql-fill {
+    fill: var(--light-primary) !important;
+}
+
+.ql-snow .ql-picker,
+.ql-snow .ql-picker-item {
+    color: var(--light-primary) !important;
+}
+
+.ql-snow .ql-picker-options {
+    background-color: var(--dark-primary) !important;
+    border: 1px solid var(--glass-border) !important;
+}
+
+.ql-snow .ql-picker-item:hover,
+.ql-snow .ql-picker-item.ql-selected,
+.ql-snow .ql-picker-label:hover,
+.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+    color: var(--color-primary) !important;
+}
+
+.ql-snow .ql-picker-item:hover,
+.ql-snow .ql-picker-item.ql-selected {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.ql-snow .ql-picker-label:hover .ql-stroke,
+.ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke {
+    stroke: var(--color-primary) !important;
+}
+
+.ql-snow.ql-toolbar button:hover,
+.ql-snow.ql-toolbar button.ql-active,
+.ql-snow.ql-toolbar button:focus {
+    color: var(--color-primary) !important;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-stroke,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.ql-snow.ql-toolbar button:focus .ql-stroke,
+.ql-snow.ql-toolbar button:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
+.ql-snow.ql-toolbar button:focus .ql-stroke-miter {
+    stroke: var(--color-primary) !important;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-fill,
+.ql-snow.ql-toolbar button.ql-active .ql-fill,
+.ql-snow.ql-toolbar button:focus .ql-fill {
+    fill: var(--color-primary) !important;
 }

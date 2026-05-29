@@ -24,5 +24,10 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('GET', '/blogs/create', [$blogController, "create"]);
         $router->addRoute('POST', '/blogs', [$blogController, "store"]);
         $router->addRoute('GET', '/blogs/(?<slug>[a-zA-Z0-9-]+)', [$blogController, "show"]);
+        $router->addRoute('GET', '/blogs/(?<slug>[a-zA-Z0-9-]+)/edit', [$blogController, "edit"]);
+        $router->addRoute('POST', '/blogs/(?<slug>[a-zA-Z0-9-]+)/edit', [$blogController, "update"]);
+        $router->addRoute('GET', '/blogs/(?<slug>[a-zA-Z0-9-]+)/delete', [$blogController, "delete"]);
+        $router->addRoute('POST', '/blogs/(?<slug>[a-zA-Z0-9-]+)/delete', [$blogController, "destroy"]);
+        $router->addRoute('POST', '/blogs/(?<slug>[a-zA-Z0-9-]+)/toggle-publish', [$blogController, "togglePublish"]);
     }
 }

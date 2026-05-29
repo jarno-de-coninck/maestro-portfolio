@@ -11,5 +11,6 @@ class Blog
     public string $content;
     public ?string $preview_image;
     public ?string $header_image;
+    public int $published = 0;
     public string $created_at;
 }

@@ -1,6 +1,6 @@
 {% extends "partials/base.html.twig" %}
 
-{% set pageTitle = "Create Blog" %}
+{% set pageTitle = "Edit Blog" %}
 
 {% block extra_css %}
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" rel="stylesheet" />
@@ -8,41 +8,41 @@
 
 {% block content %}
     <div class="w-50 mx-auto mt-5 profile-block p-4 glass-text">
-        <h2 class="mb-4">Write a New Blog Post</h2>
+        <h2 class="mb-4">Edit Blog Post</h2>
 
-        <form method="POST" action="/blogs" class="glass-form" id="blogForm">
+        <form method="POST" action="/blogs/{{ blog.slug }}/edit" class="glass-form" id="blogForm">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" required>
+                <input type="text" class="form-control" id="title" name="title" value="{{ blog.title }}" required>
             </div>
 
             <div class="mb-3">
                 <label for="subtitle" class="form-label">Subtitle</label>
-                <input type="text" class="form-control" id="subtitle" name="subtitle" required>
+                <input type="text" class="form-control" id="subtitle" name="subtitle" value="{{ blog.subtitle }}" required>
             </div>
 
             <div class="mb-3">
                 <label for="preview_image" class="form-label">Preview Image URL</label>
-                <input type="text" class="form-control" id="preview_image" name="preview_image" placeholder="Preview image URL" required>
+                <input type="text" class="form-control" id="preview_image" name="preview_image" value="{{ blog.preview_image }}" placeholder="Preview image URL" required>
             </div>
 
             <div class="mb-3">
                 <label for="header_image" class="form-label">Header Image URL</label>
-                <input type="text" class="form-control" id="header_image" name="header_image" placeholder="Header image URL" >
+                <input type="text" class="form-control" id="header_image" name="header_image" value="{{ blog.header_image }}" placeholder="Header image URL" >
             </div>
 
             <div class="mb-4 form-check">
-                <input type="checkbox" class="form-check-input" id="published" name="published" value="1">
-                <label class="form-check-label" for="published">Publish this blog post immediately</label>
+                <input type="checkbox" class="form-check-input" id="published" name="published" value="1" {% if blog.published %}checked{% endif %}>
+                <label class="form-check-label" for="published">Publish this blog post</label>
             </div>
 
             <div class="mb-4">
                 <label for="editor" class="form-label">Content</label>
-                <div id="editor"></div>
+                <div id="editor">{{ blog.content|raw }}</div>
                 <input type="hidden" name="content" id="content">
             </div>
 
-            <button type="submit" class="btn btn-glass-primary w-100 mt-3">Publish Post</button>
+            <button type="submit" class="btn btn-glass-primary w-100 mt-3">Update Post</button>
         </form>
     </div>
 {% endblock %}
@@ -56,7 +56,6 @@
 
     const form = document.getElementById('blogForm');
     form.onsubmit = function() {
-        // Populate hidden form on submit
         const content = document.querySelector('input[name=content]');
         content.value = quill.root.innerHTML;
     };
