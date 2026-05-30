@@ -52,7 +52,7 @@ To set up this automated pipeline:
 3. Configure the service settings to trigger on the `main` branch.
 4. **Environment Variables:** Ensure production environment variables (like the database connection string) are set in the Railway dashboard.
 
-Railway automatically detects the `Dockerfile` in the root of the project to install Composer dependencies and host the application. **Important:** The `Dockerfile` does *not* automatically run database migrations for a remote database. If using a remote MySQL database on Railway, you must run the `.sql` scripts against the database manually (e.g., via a database GUI or Railway's query interface) when setting up the project for the first time.
+Railway automatically detects the `Dockerfile` in the root of the project to install Composer dependencies and host the application. The deployment process is configured to automatically run database migrations, so your remote database will be updated automatically when you push new changes to the `main` branch.
 
 ## Releasing New Versions
 
