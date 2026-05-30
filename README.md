@@ -1,6 +1,8 @@
 # HZ-Portfolio
 This is my personal portfolio website showcasing my educational journey from MBO to HBO-ICT at HZ University of Applied Sciences. It features a custom MVC architecture and includes my professional profile, a study progress dashboard, personal blogs, and a FAQ section.
 
+**Live Deployment:** [https://jarno-de-coninck.up.railway.app/](https://jarno-de-coninck.up.railway.app/)
+
 ## Author
 - [Jarno de Coninck](https://github.com/jarno-de-coninck)
 
@@ -34,50 +36,33 @@ This project was developed iteratively following the DevOps requirements. Below 
    ```bash
    docker compose up -d --build
    ```
-2. Install PHP dependencies inside the web container:
+2. Install PHP dependencies inside the web container (required because local volume mounts overwrite the container's vendor folder):
    ```bash
    docker compose exec web composer install
    ```
-3. Run the database migrations to set up the MySQL tables:
-   ```bash
-   docker compose exec web php maestro migrate
-   ```
+   *Note: You do not need to run a manual migration command for MySQL. The `docker-compose.yml` mounts the `./database` folder to `/docker-entrypoint-initdb.d`, meaning MySQL automatically creates the tables and inserts the data when the container starts for the first time.*
 
 ## Production Deployment
 
-To deploy this application to a live server (e.g., a VPS), the process mirrors the local setup.
+This project utilizes Continuous Deployment (CD) through Railway's GitHub integration. The application is automatically built and deployed whenever changes are pushed to the `main` branch.
 
-1. Provision a Linux server and connect to it via SSH.
-2. Install Docker and Docker Compose on the server.
-3. Clone this repository to the server.
-4. Start the environment in the background:
-   ```bash
-   docker compose up -d --build
-   ```
-5. Install the production dependencies:
-   ```bash
-   docker compose exec web composer install --no-dev --optimize-autoloader
-   ```
-6. Initialize the production database:
-   ```bash
-   docker compose exec web php maestro migrate
-   ```
+To set up this automated pipeline:
+1. Create a new project on [Railway](https://railway.app/).
+2. Select **Deploy from GitHub repo** and connect the repository.
+3. Configure the service settings to trigger on the `main` branch.
+4. **Environment Variables:** Ensure production environment variables (like the database connection string) are set in the Railway dashboard.
+
+Railway automatically detects the `Dockerfile` in the root of the project to install Composer dependencies and host the application. **Important:** The `Dockerfile` does *not* automatically run database migrations for a remote database. If using a remote MySQL database on Railway, you must run the `.sql` scripts against the database manually (e.g., via a database GUI or Railway's query interface) when setting up the project for the first time.
 
 ## Releasing New Versions
 
-Whenever code is pushed to the `main` branch, the GitHub Actions CI pipeline automatically tests the code against PHPStan, PHPCS, and Deptrac. If all checks pass, you can release the new version to production.
+Releasing new versions is fully automated thanks to my CI/CD setup. 
 
-1. Connect to your production server via SSH.
-2. Navigate to the project directory.
-3. Pull the latest code:
-   ```bash
-   git pull origin main
-   ```
-4. Rebuild the web container with the new code:
-   ```bash
-   docker compose up -d --build
-   ```
-5. Run migrations to apply any database changes:
-   ```bash
-   docker compose exec web php maestro migrate
-   ```
+1. Create a feature branch and commit your code.
+2. Push the branch to GitHub and create a Pull Request (PR) against the `main` branch.
+3. The GitHub Actions CI pipeline will automatically test the code. It enforces:
+   - PHPStan static analysis (Level 8)
+   - PHPCS code style checks (PSR-12)
+   - Deptrac dependency checks
+4. Once the CI checks pass and the PR is merged into `main`, a webhook automatically alerts Railway.
+5. Railway fetches the latest code, builds a new container image, and deploys it with zero downtime.

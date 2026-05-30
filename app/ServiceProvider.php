@@ -4,8 +4,10 @@ namespace App;
 
 use App\Controllers\HomeController;
 use App\Controllers\BlogController;
+use App\Controllers\ProfileController;
 use App\Repositories\BlogRepository;
 use App\Repositories\GradeRepository;
+use App\Repositories\ProfileRepository;
 use Framework\Database;
 use Framework\ResponseFactory;
 use Framework\ServiceContainer;
@@ -27,5 +29,9 @@ class ServiceProvider implements ServiceProviderInterface
 
         $blogController = new BlogController($responseFactory, $blogRepository);
         $container->set(BlogController::class, $blogController);
+
+        $profileRepository = new ProfileRepository($database);
+        $profileController = new ProfileController($responseFactory, $profileRepository);
+        $container->set(ProfileController::class, $profileController);
     }
 }

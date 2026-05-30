@@ -18,14 +18,14 @@
                 <form action="/blogs/{{ blog.slug }}/toggle-publish" method="POST" class="m-0 me-2">
                     <button type="submit" class="btn {% if blog.published %}btn-glass-warning{% else %}btn-glass-success{% endif %}">
                         {% if blog.published %}
-                            Unpublish
+                            Unpublishtn-red
                         {% else %}
                             Publish
                         {% endif %}
                     </button>
                 </form>
                 <a href="/blogs/{{ blog.slug }}/edit" class="btn btn-glass-primary me-2">Edit Post</a>
-                <a href="/blogs/{{ blog.slug }}/delete" class="btn btn-glass-danger">Delete Post</a>
+                <a href="/blogs/{{ blog.slug }}/delete" class="btn btn-red btn-glass-danger">Delete Post</a>
             </div>
         </div>
     </div>

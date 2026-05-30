@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Grade;
 use App\Repositories\GradeRepositoryInterface;
+use App\Repositories\ProfileRepositoryInterface;
 use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
@@ -13,8 +14,10 @@ class HomeController
     private ResponseFactory $responseFactory;
     private GradeRepositoryInterface $gradeRepository;
 
-    public function __construct(ResponseFactory $responseFactory, GradeRepositoryInterface $gradeRepository)
-    {
+    public function __construct(
+        ResponseFactory $responseFactory,
+        GradeRepositoryInterface $gradeRepository,
+    ) {
         $this->responseFactory = $responseFactory;
         $this->gradeRepository = $gradeRepository;
     }
@@ -22,11 +25,6 @@ class HomeController
     public function index(): Response
     {
         return $this->responseFactory->view("index.html.twig");
-    }
-
-    public function profile(): Response
-    {
-        return $this->responseFactory->view("profile.html.twig");
     }
 
     public function dashboard(): Response
