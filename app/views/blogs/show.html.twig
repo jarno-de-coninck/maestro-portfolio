@@ -18,7 +18,7 @@
                 <form action="/blogs/{{ blog.slug }}/toggle-publish" method="POST" class="m-0 me-2">
                     <button type="submit" class="btn {% if blog.published %}btn-glass-warning{% else %}btn-glass-success{% endif %}">
                         {% if blog.published %}
-                            Unpublishs
+                            Unpublish
                         {% else %}
                             Publish
                         {% endif %}
