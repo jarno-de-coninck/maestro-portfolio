@@ -61,6 +61,15 @@ class AuthController
             ]);
         }
 
+        if (!$this->authService->isPasswordStrong($password)) {
+            $errorMsg = 'Password must be at least 8 characters long, ' .
+                'contain at least one uppercase letter and one number.';
+            return $this->responseFactory->view('auth/register.html.twig', [
+                'error' => $errorMsg,
+                'old' => ['name' => $name, 'email' => $email]
+            ]);
+        }
+
         $user = new User();
         $user->name = $name;
         $user->email = $email;
