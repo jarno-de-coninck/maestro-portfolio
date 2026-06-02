@@ -16,6 +16,16 @@
                 </div>
             {% endif %}
 
+            {% if errors %}
+                <div class="alert alert-danger mb-4">
+                    <ul class="mb-0">
+                        {% for err in errors %}
+                            <li>{{ err }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
             <form action="/register" method="POST">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
@@ -30,14 +40,24 @@
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" id="password" name="password" class="form-control" required>
+                    <div id="password-feedback" class="mt-2" style="font-size: 0.75rem;">
+                        <ul class="list-unstyled mb-0">
+                            <li id="rule-length" class="text-muted">● Min. 8 characters</li>
+                            <li id="rule-upper" class="text-muted">● 1 uppercase letter</li>
+                            <li id="rule-number" class="text-muted">● 1 number</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="mb-4">
                     <label for="password_confirm" class="form-label">Confirm Password</label>
                     <input type="password" id="password_confirm" name="password_confirm" class="form-control" required>
+                    <div id="match-feedback" class="mt-1 d-none" style="font-size: 0.75rem;">
+                        <span class="text-danger">Passwords do not match</span>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn btn-glass-primary w-100">Register</button>
+                <button type="submit" id="submit-btn" class="btn btn-glass-primary w-100">Register</button>
             </form>
 
             <p class="text-center mt-4 mb-0">
@@ -45,4 +65,66 @@
             </p>
         </div>
     </main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('password_confirm');
+    const submitBtn = document.getElementById('submit-btn');
+    
+    const rules = {
+        length: document.getElementById('rule-length'),
+        upper: document.getElementById('rule-upper'),
+        number: document.getElementById('rule-number')
+    };
+    const matchFeedback = document.getElementById('match-feedback');
+
+    let debounceTimer;
+
+    function validate() {
+        const val = passwordInput.value;
+        const confirmVal = confirmInput.value;
+
+        // Password Rules
+        const isLengthOk = val.length >= 8;
+        const isUpperOk = /[A-Z]/.test(val);
+        const isNumberOk = /[0-9]/.test(val);
+
+        updateRule(rules.length, isLengthOk);
+        updateRule(rules.upper, isUpperOk);
+        updateRule(rules.number, isNumberOk);
+
+        // Confirm Match
+        if (confirmVal.length > 0) {
+            matchFeedback.classList.toggle('d-none', val === confirmVal);
+        } else {
+            matchFeedback.classList.add('d-none');
+        }
+    }
+
+    function updateRule(el, isValid) {
+        if (isValid) {
+            el.classList.remove('text-muted', 'text-danger');
+            el.classList.add('text-success');
+            el.innerHTML = '✔ ' + el.innerText.substring(2);
+        } else {
+            el.classList.remove('text-success');
+            el.classList.add('text-danger');
+            el.innerHTML = '✘ ' + el.innerText.substring(2);
+        }
+    }
+
+    passwordInput.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(validate, 500);
+    });
+
+    confirmInput.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(validate, 500);
+    });
+});
+</script>
 {% endblock %}

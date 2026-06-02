@@ -61,6 +61,21 @@ class AuthController
             ]);
         }
 
+        $passwordErrors = $this->authService->validatePassword($password);
+        if (!empty($passwordErrors)) {
+            return $this->responseFactory->view('auth/register.html.twig', [
+                'errors' => $passwordErrors,
+                'old' => ['name' => $name, 'email' => $email]
+            ]);
+        }
+
+        if ($this->authService->userExists($email)) {
+            return $this->responseFactory->view('auth/register.html.twig', [
+                'error' => 'This email address is already registered.',
+                'old' => ['name' => $name, 'email' => $email]
+            ]);
+        }
+
         $user = new User();
         $user->name = $name;
         $user->email = $email;
