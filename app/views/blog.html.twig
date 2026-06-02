@@ -7,11 +7,14 @@
     <section class="w-75 mx-auto mt-4">
         <div class="d-flex justify-content-between align-items-center mb-5">
             <h1 class="m-0"> Latest blogs </h1>
-            <a href="/blogs/create" class="btn btn-glass-primary">Write New Blog</a>
+            {% if user and user.is_admin %}
+                <a href="/blogs/create" class="btn btn-glass-primary">Write New Blog</a>
+            {% endif %}
         </div>
 
         <div class="row justify-content-center">
             {% for blog in blogs %}
+                {% if blog.published or (user and user.is_admin) %}
                 <article class="col-md-7 mb-3">
                     <button onclick="window.location.href='/blogs/{{ blog.slug }}'" class="w-100 p-3 blog-button text-start">
                         <div class="d-flex align-items-center mb-2">
@@ -28,6 +31,7 @@
                         </p>
                     </button>
                 </article>
+                {% endif %}
             {% else %}
                 <p class="text-center">No blogs found.</p>
             {% endfor %}

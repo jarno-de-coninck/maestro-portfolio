@@ -14,6 +14,9 @@ class Route
     /** @var string[] */
     public array $routeParameters;
 
+    /** @var array<callable> */
+    public array $middleware = [];
+
     public function __construct(string $method, string $path, callable $callback)
     {
         $this->method = $method;
@@ -33,5 +36,11 @@ class Route
         }
 
         return false;
+    }
+
+    public function addMiddleware(callable $middleware): self
+    {
+        $this->middleware[] = $middleware;
+        return $this;
     }
 }

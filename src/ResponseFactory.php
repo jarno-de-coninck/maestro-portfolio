@@ -5,8 +5,9 @@ namespace Framework;
 class ResponseFactory
 {
     private \Twig\Environment $twig;
+    private Session $session;
 
-    public function __construct(bool $debugMode, string $viewsPath)
+    public function __construct(bool $debugMode, string $viewsPath, Session $session)
     {
         $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/../' . $viewsPath);
         $twig = new \Twig\Environment($loader, [
@@ -16,6 +17,7 @@ class ResponseFactory
             $twig->addExtension(new \Twig\Extension\DebugExtension());
         }
         $this->twig = $twig;
+        $this->session = $session;
     }
 
     /**
@@ -29,6 +31,7 @@ class ResponseFactory
 
         try {
             $response->responseCode = 200;
+            $context['user'] = $this->session->getMany('user');
             $response->body = $this->twig->render($view, $context);
             return $response;
         } catch (\Exception $e) {
@@ -70,7 +73,7 @@ class ResponseFactory
     {
         $response = new Response();
         $response->responseCode = 302;
-        $response->header = "Location: " . $url;
+        $response->headers = ["Location: " . $url];
         return $response;
     }
 }

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Blog;
 use App\Repositories\BlogRepositoryInterface;
+use App\Services\AuthMiddleware;
 use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
@@ -12,17 +13,24 @@ class BlogController
 {
     private ResponseFactory $responseFactory;
     private BlogRepositoryInterface $blogRepository;
+    private AuthMiddleware $authMiddleware;
 
-    public function __construct(ResponseFactory $responseFactory, BlogRepositoryInterface $blogRepository)
-    {
+    public function __construct(
+        ResponseFactory $responseFactory,
+        BlogRepositoryInterface $blogRepository,
+        AuthMiddleware $authMiddleware
+    ) {
         $this->responseFactory = $responseFactory;
         $this->blogRepository = $blogRepository;
+        $this->authMiddleware = $authMiddleware;
     }
 
     public function index(): Response
     {
         $blogs = $this->blogRepository->all();
-        return $this->responseFactory->view("blog.html.twig", ["blogs" => $blogs]);
+        return $this->responseFactory->view("blog.html.twig", [
+            "blogs" => $blogs
+        ]);
     }
 
     public function show(Request $request): Response
@@ -39,7 +47,13 @@ class BlogController
             return $this->responseFactory->notFound();
         }
 
-        return $this->responseFactory->view("blogs/show.html.twig", ["blog" => $blog]);
+        if (!$blog->published && !$this->authMiddleware->isAdmin()) {
+            return $this->responseFactory->notFound();
+        }
+
+        return $this->responseFactory->view("blogs/show.html.twig", [
+            "blog" => $blog
+        ]);
     }
 
     public function create(): Response
@@ -87,7 +101,9 @@ class BlogController
             return $this->responseFactory->notFound();
         }
 
-        return $this->responseFactory->view("blogs/edit.html.twig", ["blog" => $blog]);
+        return $this->responseFactory->view("blogs/edit.html.twig", [
+            "blog" => $blog
+        ]);
     }
 
     public function update(Request $request): Response
@@ -130,7 +146,9 @@ class BlogController
             return $this->responseFactory->notFound();
         }
 
-        return $this->responseFactory->view("blogs/delete.html.twig", ["blog" => $blog]);
+        return $this->responseFactory->view("blogs/delete.html.twig", [
+            "blog" => $blog
+        ]);
     }
 
     public function destroy(Request $request): Response

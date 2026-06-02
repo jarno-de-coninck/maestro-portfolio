@@ -37,7 +37,9 @@
                     </li>
                 {% endif %}
             </ul>
-            <a href="/profile/edit" class="btn btn-glass-primary w-100">Edit Profile</a>
+            {% if user and user.is_admin %}
+                <a href="/profile/edit" class="btn btn-glass-primary w-100">Edit Profile</a>
+            {% endif %}
         </article>
         <article class="profile-block w-75 p-4 align-center d-flex justify-content-center">
             <div id="profile-carousel" class="carousel slide w-100" data-bs-ride="carousel">

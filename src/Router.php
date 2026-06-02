@@ -9,6 +9,9 @@ class Router
     /** @var Route[] */
     private array $routes = [];
 
+    /** @var array<callable> */
+    private array $globalMiddleware = [];
+
     public function __construct(ResponseFactory $responseFactory)
     {
         $this->responseFactory = $responseFactory;
@@ -24,10 +27,10 @@ class Router
     {
         foreach ($this->routes as $route) {
             if ($route->matches($request->method, $request->path)) {
-                $callback = $route->callback;
                 $request->routeParameters = $route->routeParameters;
-                $response = $callback($request);
-                return $response;
+
+                $pipeline = $this->buildMiddlewarePipeline($route);
+                return $pipeline($request);
             }
         }
 
@@ -41,11 +44,35 @@ class Router
      * @param string $method HTTP method
      * @param string $path URL path
      * @param callable $callback Callback function to handle the route
-     * @return void
+     * @return Route
      */
-    public function addRoute(string $method, string $path, callable $callback): void
+    public function addRoute(string $method, string $path, callable $callback): Route
     {
         $route = new Route($method, $path, $callback);
         $this->routes[] = $route;
+        return $route;
+    }
+
+    public function addMiddleware(callable $middleware): void
+    {
+        $this->globalMiddleware[] = $middleware;
+    }
+
+    private function buildMiddlewarePipeline(Route $route): callable
+    {
+        $callback = $route->callback;
+        $middlewareStack = array_reverse(array_merge($this->globalMiddleware, $route->middleware));
+
+        $pipeline = function ($request) use ($callback) {
+            return $callback($request);
+        };
+
+        foreach ($middlewareStack as $middleware) {
+            $next = $pipeline;
+            $pipeline = function ($request) use ($middleware, $next) {
+                return $middleware($request, $next);
+            };
+        }
+        return $pipeline;
     }
 }

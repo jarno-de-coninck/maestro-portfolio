@@ -40,10 +40,13 @@
     </section>
 
     <article class="w-100 d-flex justify-content-center mb-5">
+        {% set can_manage_grades = user and user.is_admin %}
         <form method="POST" action="/dashboard" class="w-75">
+            {% if can_manage_grades %}
             <div class="d-flex justify-content-end mb-3">
                 <button type="submit" class="btn btn-glass-primary mt-3">Save Grades</button>
             </div>
+            {% endif %}
 
             <table class="w-100">
                 <thead>
@@ -72,7 +75,11 @@
                     <tr>
                         <td>{{ first_in_course ? grade.course_name : '' }}</td>
                         <td>
-                            <input type="number" name="grades[{{ grade.id }}]" class="form-control grade" value="{{ grade.grade }}" min="0" max="10" step="0.1" style="width: 80px;">
+                            {% if can_manage_grades %}
+                                <input type="number" name="grades[{{ grade.id }}]" class="form-control grade" value="{{ grade.grade }}" min="0" max="10" step="0.1" style="width: 80px;">
+                            {% else %}
+                                <span>{{ grade.grade > 0 ? grade.grade : '-' }}</span>
+                            {% endif %}
                         </td>
                         <td class="ec">{{ grade.ec }}</td>
                         <td>{{ grade.test_name }}</td>

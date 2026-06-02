@@ -21,8 +21,13 @@ class Kernel
         $this->configManager = new ConfigManager($config);
 
         $debugMode = $this->configManager->get('APP_ENV') != 'production';
+
+        $session = new Session();
+        $session->sessionStart(!$debugMode);
+        $this->container->set(Session::class, $session);
+
         $viewsPath = $this->configManager->get('VIEWS_PATH');
-        $responseFactory = new ResponseFactory($debugMode, $viewsPath);
+        $responseFactory = new ResponseFactory($debugMode, $viewsPath, $session);
         $this->container->set(ResponseFactory::class, $responseFactory);
 
         $database = new Database();

@@ -31,6 +31,7 @@ abstract class AbstractRepository
      */
     private function getColumnNames(string $tableName): array
     {
+        $tableName = preg_replace('/[^a-zA-Z0-9_]/', '', $tableName);
         $query = "SHOW TABLES LIKE '$tableName'";
         $statement = $this->database->run($query);
 
@@ -70,8 +71,8 @@ abstract class AbstractRepository
     {
         $object = new $this->className();
 
-        foreach ($this->columnNames as $column) {
-            $object->{$column} = $row->{$column};
+        foreach (get_object_vars($row) as $column => $value) {
+            $object->{$column} = $value;
         }
 
         return $object;

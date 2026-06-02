@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Repositories\ProfileRepositoryInterface;
+use App\Services\AuthMiddleware;
 use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
@@ -24,16 +25,20 @@ class ProfileController
         $profile = $this->profileRepository->get();
 
         if (!isset($profile)) {
-            $this->responseFactory->notFound();
+            return $this->responseFactory->notFound();
         }
 
-        return $this->responseFactory->view("profile.html.twig", ["profile" => $profile]);
+        return $this->responseFactory->view("profile.html.twig", [
+            "profile" => $profile
+        ]);
     }
 
     public function edit(): Response
     {
         $profile = $this->profileRepository->get();
-        return $this->responseFactory->view("profile/edit.html.twig", ["profile" => $profile]);
+        return $this->responseFactory->view("profile/edit.html.twig", [
+            "profile" => $profile
+        ]);
     }
 
     public function update(Request $request): Response

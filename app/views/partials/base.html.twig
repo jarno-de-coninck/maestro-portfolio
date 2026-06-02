@@ -7,42 +7,51 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel='stylesheet' type='text/css' media='screen' href='/css/styles.css'>
-
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-<header>
-    <nav class="py-3 d-flex justify-content-center align-items-center position-fixed w-100 z-2">
-        <ul class="list-unstyled d-flex gap-5 m-0">
-            <li><a class="{{ currentRoute == 'home' ? 'active' : '' }}" href="/">Home</a></li>
-            <li><a class="{{ currentRoute == 'profile' ? 'active' : '' }}" href="/profile">Profile</a></li>
-            <li><a class="{{ currentRoute == 'dashboard' ? 'active' : '' }}" href="/dashboard">Dashboard</a></li>
-            <li><a class="{{ currentRoute == 'faq' ? 'active' : '' }}" href="/faq">FAQ</a></li>
-            <li><a class="{{ currentRoute in ['blog', 'blog_post'] ? 'active' : '' }}" href="/blog">Blog</a></li>
-        </ul>
-    </nav>
-</header>
-
+{% block nav %}
+    <header>
+        <nav class="py-3 d-flex justify-content-between align-items-center position-fixed w-100 z-2 px-5">
+            <ul class="list-unstyled d-flex gap-5 m-0 align-items-center">
+                <li><a class="{{ currentRoute == 'home' ? 'active' : '' }}" href="/">Home</a></li>
+                <li><a class="{{ currentRoute == 'profile' ? 'active' : '' }}" href="/profile">Profile</a></li>
+                <li><a class="{{ currentRoute == 'dashboard' ? 'active' : '' }}" href="/dashboard">Dashboard</a></li>
+                <li><a class="{{ currentRoute == 'faq' ? 'active' : '' }}" href="/faq">FAQ</a></li>
+                <li><a class="{{ currentRoute in ['blog', 'blog_post'] ? 'active' : '' }}" href="/blog">Blog</a></li>
+            </ul>
+            <div class="auth-links d-flex gap-3 align-items-center">
+                {% if user %}
+                    <span class="text-muted small">{{ user.name }}</span>
+                    <a href="/logout" class="btn btn-glass-danger btn-sm">Logout</a>
+                {% else %}
+                    <a class="{{ currentRoute == 'login' ? 'active' : '' }}" href="/login">Login</a>
+                    <a href="/register" class="btn btn-glass-primary btn-sm">Register</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+{% endblock %}
 <main class="pt-5">
     {% block content %}{% endblock %}
 </main>
-
-<aside id="main-aside" class="d-flex justify-content-center p-3 mt-5">
-    <a href="https://portal.hz.nl/" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">MyHz</a>
-    <span class="text-muted">|</span>
-    <a href="https://apps.hz.nl/rooster/" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">Schedule</a>
-    <span class="text-muted">|</span>
-    <a href="https://learn.hz.nl/my/" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">LearnHz</a>
-    <span class="text-muted">|</span>
-    <a href="https://hz.osiris-student.nl/voortgang" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">Study progress</a>
-    <span class="text-muted">|</span>
-    <a href="https://oer.hz.nl/" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">Course and Examination Regulations</a>
-    <span class="text-muted">|</span>
-    <a href="https://oer.hz.nl/6978cdea-fb31-430b-9bf9-63206aa07754" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">IR HBO-ICT</a>
-    <span class="text-muted">|</span>
-    <a href="https://github.com/HZ-HBO-ICT" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">Github HZ HBO-ICT</a>
-</aside>
-
+{% block aside %}
+    <aside id="main-aside" class="d-flex justify-content-center p-3 mt-5">
+        <a href="https://portal.hz.nl/" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">MyHz</a>
+        <span class="text-muted">|</span>
+        <a href="https://apps.hz.nl/rooster/" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">Schedule</a>
+        <span class="text-muted">|</span>
+        <a href="https://learn.hz.nl/my/" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">LearnHz</a>
+        <span class="text-muted">|</span>
+        <a href="https://hz.osiris-student.nl/voortgang" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">Study progress</a>
+        <span class="text-muted">|</span>
+        <a href="https://oer.hz.nl/" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">Course and Examination Regulations</a>
+        <span class="text-muted">|</span>
+        <a href="https://oer.hz.nl/6978cdea-fb31-430b-9bf9-63206aa07754" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">IR HBO-ICT</a>
+        <span class="text-muted">|</span>
+        <a href="https://github.com/HZ-HBO-ICT" target="_blank" rel="noopener noreferrer" class="text-decoration-none px-3">Github HZ HBO-ICT</a>
+    </aside>
+{% endblock %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 {% block extra_js %}{% endblock %}
 </body>

@@ -14,6 +14,7 @@
 
             {{ blog.content|raw }}
 
+            {% if user and user.is_admin %}
             <div class="blog-actions-footer d-flex align-items-center mt-5">
                 <form action="/blogs/{{ blog.slug }}/toggle-publish" method="POST" class="m-0 me-2">
                     <button type="submit" class="btn {% if blog.published %}btn-glass-warning{% else %}btn-glass-success{% endif %}">
@@ -27,6 +28,7 @@
                 <a href="/blogs/{{ blog.slug }}/edit" class="btn btn-glass-primary me-2">Edit Post</a>
                 <a href="/blogs/{{ blog.slug }}/delete" class="btn btn-red btn-glass-danger">Delete Post</a>
             </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

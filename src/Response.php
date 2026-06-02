@@ -8,13 +8,19 @@ class Response
 
     public string $body;
 
-    public ?string $header;
+    /** @var string[] */
+    public array $headers = [];
 
-    public function __construct(string $body = "", int $responseCode = 200, ?string $header = null)
+    /**
+     * @param string $body
+     * @param int $responseCode
+     * @param string[] $headers
+     */
+    public function __construct(string $body = "", int $responseCode = 200, array $headers = [])
     {
         $this->body = $body;
         $this->responseCode = $responseCode;
-        $this->header = $header;
+        $this->headers = $headers;
     }
 
     /**
@@ -22,8 +28,8 @@ class Response
      */
     public function echo(): void
     {
-        if ($this->header !== null) {
-            header($this->header);
+        foreach ($this->headers as $header) {
+            header($header);
         }
         http_response_code($this->responseCode);
         echo $this->body;

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Grade;
 use App\Repositories\GradeRepositoryInterface;
 use App\Repositories\ProfileRepositoryInterface;
+use App\Services\AuthMiddleware;
 use Framework\Request;
 use Framework\Response;
 use Framework\ResponseFactory;
@@ -16,7 +17,7 @@ class HomeController
 
     public function __construct(
         ResponseFactory $responseFactory,
-        GradeRepositoryInterface $gradeRepository,
+        GradeRepositoryInterface $gradeRepository
     ) {
         $this->responseFactory = $responseFactory;
         $this->gradeRepository = $gradeRepository;
@@ -30,12 +31,14 @@ class HomeController
     public function dashboard(): Response
     {
         $grades = $this->gradeRepository->all();
-        return $this->responseFactory->view("dashboard.html.twig", ["grades" => $grades]);
+        return $this->responseFactory->view("dashboard.html.twig", [
+            "grades" => $grades
+        ]);
     }
 
     public function updateDashboard(Request $request): Response
     {
-        $gradesData = $_POST['grades'] ?? [];
+        $gradesData = $request->getMany('grades') ?? [];
 
         foreach ($gradesData as $id => $gradeValue) {
             $grade = $this->gradeRepository->findById((int)$id);
