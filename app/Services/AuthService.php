@@ -35,26 +35,33 @@ class AuthService
         return $user;
     }
 
+    public function userExists(string $email): bool
+    {
+        return $this->userRepository->findByEmail($email) !== null;
+    }
+
     public function hashPassword(string $password): string
     {
         return password_hash($password, PASSWORD_DEFAULT);
     }
 
-    public function isPasswordStrong(string $password): bool
+    /**
+     * @param string $password
+     * @return string[]
+     */
+    public function validatePassword(string $password): array
     {
+        $errors = [];
         if (strlen($password) < 8) {
-            return false;
+            $errors[] = 'Password must be at least 8 characters long.';
         }
-
         if (!preg_match('/[A-Z]/', $password)) {
-            return false;
+            $errors[] = 'Password must contain at least one uppercase letter.';
         }
-
         if (!preg_match('/[0-9]/', $password)) {
-            return false;
+            $errors[] = 'Password must contain at least one number.';
         }
-
-        return true;
+        return $errors;
     }
 
     public function login(string $email, string $password): bool

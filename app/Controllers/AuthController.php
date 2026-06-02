@@ -61,11 +61,17 @@ class AuthController
             ]);
         }
 
-        if (!$this->authService->isPasswordStrong($password)) {
-            $errorMsg = 'Password must be at least 8 characters long, ' .
-                'contain at least one uppercase letter and one number.';
+        $passwordErrors = $this->authService->validatePassword($password);
+        if (!empty($passwordErrors)) {
             return $this->responseFactory->view('auth/register.html.twig', [
-                'error' => $errorMsg,
+                'errors' => $passwordErrors,
+                'old' => ['name' => $name, 'email' => $email]
+            ]);
+        }
+
+        if ($this->authService->userExists($email)) {
+            return $this->responseFactory->view('auth/register.html.twig', [
+                'error' => 'This email address is already registered.',
                 'old' => ['name' => $name, 'email' => $email]
             ]);
         }
