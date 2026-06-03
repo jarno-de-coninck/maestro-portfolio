@@ -1,7 +1,10 @@
 FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y unzip git default-mysql-client
-RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install pdo pdo_mysql \
+    && pecl install pcov \
+    && docker-php-ext-enable pcov \
+    && echo "pcov.directory=/var/www/html" >> /usr/local/etc/php/conf.d/docker-php-ext-pcov.ini
 RUN a2enmod rewrite
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public

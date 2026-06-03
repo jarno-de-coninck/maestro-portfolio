@@ -42,6 +42,18 @@ This project was developed iteratively following the DevOps requirements. Below 
    ```
    *Note: You do not need to run a manual migration command for MySQL. The `docker-compose.yml` mounts the `./database` folder to `/docker-entrypoint-initdb.d`, meaning MySQL automatically creates the tables and inserts the data when the container starts for the first time.*
 
+## Testing
+
+This project uses PHPUnit for both Unit and Integration testing, ensuring robust validation of the application logic and database interactions. The test suite exclusively targets the app-level code (Controllers, Services, Models, and Repositories) and achieves over 60% code coverage as required.
+
+To run the complete test suite (with a text-based coverage report), use the custom `maestro` command inside the Docker web container:
+
+```bash
+docker compose exec web php maestro phpunit
+```
+
+*(Note: Executing this via Docker is required to access the `pdo_mysql` and `pcov` extensions necessary for database connections and coverage reporting.)*
+
 ## Production Deployment
 
 This project utilizes Continuous Deployment (CD) through Railway's GitHub integration. The application is automatically built and deployed whenever changes are pushed to the `main` branch.

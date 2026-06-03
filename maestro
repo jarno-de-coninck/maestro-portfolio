@@ -37,3 +37,6 @@ if ($argv[1] === 'phpcbf') {
 if ($argv[1] === 'deptrac') {
     passthru('php vendor/bin/deptrac --ansi');
 }
+if ($argv[1] === 'phpunit') {
+    passthru('./vendor/bin/phpunit --testdox --colors=always --coverage-text tests');
+}

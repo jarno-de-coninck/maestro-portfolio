@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const val = passwordInput.value;
         const confirmVal = confirmInput.value;
 
-        // Password Rules
         const isLengthOk = val.length >= 8;
         const isUpperOk = /[A-Z]/.test(val);
         const isNumberOk = /[0-9]/.test(val);
@@ -96,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
         updateRule(rules.upper, isUpperOk);
         updateRule(rules.number, isNumberOk);
 
-        // Confirm Match
         if (confirmVal.length > 0) {
             matchFeedback.classList.toggle('d-none', val === confirmVal);
         } else {
