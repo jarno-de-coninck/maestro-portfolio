@@ -11,3 +11,6 @@ composer.lock
 # User level
 .env
 *.sqlite
+
+# test result
+.phpunit.result.cache
