@@ -1,36 +1,31 @@
 {% extends "partials/base.html.twig" %}
-
 {% set pageTitle = "Blog" %}
 {% set currentRoute = "blog" %}
-
 {% block content %}
     <section class="w-75 mx-auto mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-5">
-            <h1 class="m-0"> Latest blogs </h1>
+        <div class="position-relative d-flex align-items-center justify-content-center mb-5">
+            <h1 class="mb-0">Latest blogs</h1>
             {% if user and user.is_admin %}
-                <a href="/blogs/create" class="btn btn-glass-primary">Write New Blog</a>
+                <a href="/blogs/create" class="btn btn-glass-primary position-absolute end-0">Write New Blog</a>
             {% endif %}
         </div>
-
         <div class="row justify-content-center">
             {% for blog in blogs %}
                 {% if blog.published or (user and user.is_admin) %}
-                <article class="col-md-7 mb-3">
-                    <button onclick="window.location.href='/blogs/{{ blog.slug }}'" class="w-100 p-3 blog-button text-start">
-                        <div class="d-flex align-items-center mb-2">
-                            <img src="{{ blog.preview_image }}" alt="Preview" class="blog-image me-3 rounded">
-                            <h5 class="mb-0"> 
-                                {{ blog.title }} 
-                                {% if not blog.published %}
-                                    <span class="badge bg-warning text-dark ms-2" style="font-size: 0.7em;">Draft</span>
-                                {% endif %}
-                            </h5>
-                        </div>
-                        <p class="mb-0 text-muted">
-                            {{ blog.subtitle }}
-                        </p>
-                    </button>
-                </article>
+                    <article class="col-md-7 mb-3">
+                        <button onclick="window.location.href='/blogs/{{ blog.slug }}'" class="w-100 p-3 blog-button text-start">
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="{{ blog.preview_image }}" alt="Preview" class="blog-image me-3 rounded">
+                                <h5 class="mb-0">
+                                    {{ blog.title }}
+                                    {% if not blog.published %}
+                                        <span class="badge bg-warning text-dark ms-2" style="font-size: 0.7em;">Draft</span>
+                                    {% endif %}
+                                </h5>
+                            </div>
+                            <p class="mb-0 text-muted">{{ blog.subtitle }}</p>
+                        </button>
+                    </article>
                 {% endif %}
             {% else %}
                 <p class="text-center">No blogs found.</p>

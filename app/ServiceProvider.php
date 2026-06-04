@@ -6,6 +6,7 @@ use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\ProfileController;
 use App\Controllers\AuthController;
+use App\Controllers\ApiController;
 use App\Repositories\BlogRepository;
 use App\Repositories\GradeRepository;
 use App\Repositories\ProfileRepository;
@@ -49,5 +50,8 @@ class ServiceProvider implements ServiceProviderInterface
         $profileRepository = new ProfileRepository($database);
         $profileController = new ProfileController($responseFactory, $profileRepository);
         $container->set(ProfileController::class, $profileController);
+
+        $apiController = new ApiController($blogRepository, $gradeRepository, $profileRepository, $responseFactory);
+        $container->set(ApiController::class, $apiController);
     }
 }

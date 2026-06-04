@@ -1,0 +1,105 @@
+{% extends "partials/base.html.twig" %}
+
+{% set pageTitle = "Showcase Feed" %}
+{% set currentRoute = "showcase" %}
+
+{% block content %}
+    <section class="w-75 mx-auto mt-4">
+        
+        <article class="api-block p-4 mb-5 text-center">
+            <h1 class="mb-2">Live API Showcase</h1>
+            <p class="mb-0 text-muted">
+                This page demonstrates the client-side API requirement. All data below is fetched dynamically via <code>fetch()</code> from the REST API endpoints.
+            </p>
+        </article>
+
+        <div class="position-relative d-flex align-items-center justify-content-center mb-4">
+            <h3 class="mb-0 text-white">Dynamically Loaded Blogs</h3>
+        </div>
+
+        <div id="api-feed-container" class="row justify-content-center">
+            <!-- Loading Skeletons -->
+            <div class="col-md-8 mb-3 skeleton-card">
+                <div class="api-block p-3 d-flex align-items-center">
+                    <div class="progress me-3" style="height: 40px; width: 40px; border-radius: 5px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated w-100 bg-secondary"></div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="progress mb-2" style="height: 12px; width: 60%;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated w-100 bg-secondary"></div>
+                        </div>
+                        <div class="progress" style="height: 10px; width: 80%;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated w-100 bg-secondary"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5 mb-5 text-center">
+            <p class="text-muted mb-3" style="font-size: 0.85rem;">Raw API Endpoints:</p>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <a href="/api/blogs" target="_blank" class="badge rounded-pill glass-pill text-decoration-none px-3 py-2 font-monospace">/api/blogs</a>
+                <a href="/api/blogs/1" target="_blank" class="badge rounded-pill glass-pill text-decoration-none px-3 py-2 font-monospace">/api/blogs/1</a>
+                <a href="/api/grades" target="_blank" class="badge rounded-pill glass-pill text-decoration-none px-3 py-2 font-monospace">/api/grades</a>
+                <a href="/api/profile" target="_blank" class="badge rounded-pill glass-pill text-decoration-none px-3 py-2 font-monospace">/api/profile</a>
+            </div>
+        </div>
+
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const feedContainer = document.getElementById('api-feed-container');
+
+            fetch('/api/blogs')
+                .then(response => {
+                    if (!response.ok) throw new Error(`Status: ${response.status}`);
+                    return response.json();
+                })
+                .then(blogs => {
+                    feedContainer.innerHTML = '';
+
+                    if (blogs.length === 0) {
+                        feedContainer.innerHTML = `
+                            <p class="text-center text-muted">No posts available from API.</p>
+                        `;
+                        return;
+                    }
+
+                    blogs.forEach((blog) => {
+                        const article = document.createElement('article');
+                        article.className = 'col-md-8 mb-3';
+                        
+                        article.innerHTML = `
+                            <button onclick="window.location.href='/blogs/${blog.slug}'" class="w-100 p-3 blog-button text-start d-flex flex-column" style="border-left: 3px solid var(--color-primary);">
+                                <div class="d-flex align-items-center mb-2 w-100">
+                                    <img src="${blog.preview_image}" alt="Preview" class="blog-image me-3 rounded">
+                                    <h5 class="mb-0 text-white">
+                                        ${blog.title}
+                                    </h5>
+                                </div>
+                                <p class="mb-2 text-muted" style="font-size: 0.9rem;">${blog.subtitle || ''}</p>
+                                <div class="align-self-end mt-auto">
+                                    <span class="badge rounded-pill glass-pill" style="font-size: 0.65rem; padding: 0.3em 0.6em; opacity: 0.7;">API Fetch</span>
+                                </div>
+                            </button>
+                        `;
+                        feedContainer.appendChild(article);
+                    });
+                })
+                .catch(err => {
+                    feedContainer.innerHTML = `
+                        <article class="col-md-8 mb-3">
+                            <div class="api-block p-3 border-danger text-center">
+                                <span class="text-danger fw-bold">Error loading API data.</span>
+                            </div>
+                        </article>
+                    `;
+                    console.error(err);
+                });
+        });
+    </script>
+{% endblock %}

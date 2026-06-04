@@ -54,6 +54,11 @@ class HomeController
 
     public function faq(): Response
     {
-        return $this->responseFactory->view("faq.html.twig");
+        return $this->responseFactory->view('faq.html.twig');
+    }
+
+    public function showcase(): Response
+    {
+        return $this->responseFactory->view('showcase.html.twig');
     }
 }

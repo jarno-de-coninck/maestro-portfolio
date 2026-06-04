@@ -85,7 +85,7 @@ nav a:hover {
     width: 90%;
 }
 
-.profile-block, details, .blog-button, .btn, input:not([type="checkbox"]), textarea, textarea.form-control {
+.profile-block, .api-block, details, .blog-button, .btn, input:not([type="checkbox"]), textarea, textarea.form-control {
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
     border-radius: 15px;

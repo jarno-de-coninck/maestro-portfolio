@@ -6,6 +6,7 @@ use App\Controllers\HomeController;
 use App\Controllers\BlogController;
 use App\Controllers\ProfileController;
 use App\Controllers\AuthController;
+use App\Controllers\ApiController;
 use App\Services\AuthMiddleware;
 use Framework\Router;
 use Framework\RouteProviderInterface;
@@ -23,6 +24,7 @@ class RouteProvider implements RouteProviderInterface
         $router->addRoute('POST', '/dashboard', [$homeController, "updateDashboard"])
             ->addMiddleware([$authMiddleware, 'handleAdmin']);
         $router->addRoute('GET', '/faq', [$homeController, "faq"]);
+        $router->addRoute('GET', '/showcase', [$homeController, "showcase"]);
 
         $profileController = $container->get(ProfileController::class);
         $router->addRoute('GET', '/profile', [$profileController, "index"]);
@@ -60,5 +62,12 @@ class RouteProvider implements RouteProviderInterface
             ->addMiddleware([$authMiddleware, 'handleGuest']);
         $router->addRoute('GET', '/logout', [$authController, "logout"])
             ->addMiddleware([$authMiddleware, 'handleLogin']);
+
+        // API endppoints
+        $apiController = $container->get(ApiController::class);
+        $router->addRoute('GET', '/api/blogs', [$apiController, "blogs"]);
+        $router->addRoute('GET', '/api/blogs/(?<id>\d+)', [$apiController, "show"]);
+        $router->addRoute('GET', '/api/grades', [$apiController, "grades"]);
+        $router->addRoute('GET', '/api/profile', [$apiController, "profile"]);
     }
 }

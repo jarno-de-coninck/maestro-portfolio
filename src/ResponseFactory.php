@@ -76,4 +76,25 @@ class ResponseFactory
         $response->headers = ["Location: " . $url];
         return $response;
     }
+
+    /**
+     * @param mixed $data
+     * @param int $statusCode
+     * @return Response
+     */
+    public function json(mixed $data, int $statusCode = 200): Response
+    {
+        $response = new Response();
+        try {
+            $response->responseCode = $statusCode;
+            $response->headers = ["Content-Type: application/json"];
+            $response->body = json_encode($data, JSON_THROW_ON_ERROR);
+            return $response;
+        } catch (\JsonException $e) {
+            $response->responseCode = 500;
+            $response->headers = ["Content-Type: application/json"];
+            $response->body = json_encode(['error' => 'Failed to encode JSON data']);
+            return $response;
+        }
+    }
 }
