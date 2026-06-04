@@ -93,7 +93,8 @@ class ResponseFactory
         } catch (\JsonException $e) {
             $response->responseCode = 500;
             $response->headers = ["Content-Type: application/json"];
-            $response->body = json_encode(['error' => 'Failed to encode JSON data']);
+            $fallback = json_encode(['error' => 'Failed to encode JSON data']);
+            $response->body = $fallback !== false ? $fallback : '{"error":"Failed to encode JSON data"}';
             return $response;
         }
     }
