@@ -23,20 +23,25 @@ if ($argv[1] === 'serve') {
 }
 
 if ($argv[1] === 'phpstan') {
-    passthru('php vendor/bin/phpstan --ansi');
+    passthru('php vendor/bin/phpstan --ansi --memory-limit=1G', $exitCode);
+    exit($exitCode);
 }
 
 if ($argv[1] === 'phpcs') {
-    passthru('php vendor/bin/phpcs --colors');
+    passthru('php vendor/bin/phpcs --colors', $exitCode);
+    exit($exitCode);
 }
 
 if ($argv[1] === 'phpcbf') {
-    passthru('php vendor/bin/phpcbf');
+    passthru('php vendor/bin/phpcbf', $exitCode);
+    exit($exitCode);
 }
 
 if ($argv[1] === 'deptrac') {
-    passthru('php vendor/bin/deptrac --ansi');
+    passthru('php vendor/bin/deptrac --ansi', $exitCode);
+    exit($exitCode);
 }
 if ($argv[1] === 'phpunit') {
-    passthru('./vendor/bin/phpunit --testdox --colors=always --coverage-text tests');
+    passthru('./vendor/bin/phpunit --testdox --colors=always --coverage-text tests', $exitCode);
+    exit($exitCode);
 }
