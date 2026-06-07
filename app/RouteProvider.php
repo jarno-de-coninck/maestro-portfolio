@@ -20,11 +20,13 @@ class RouteProvider implements RouteProviderInterface
 
         $homeController = $container->get(HomeController::class);
         $router->addRoute('GET', '/', [$homeController, "index"]);
-        $router->addRoute('GET', '/dashboard', [$homeController, "dashboard"]);
-        $router->addRoute('POST', '/dashboard', [$homeController, "updateDashboard"])
-            ->addMiddleware([$authMiddleware, 'handleAdmin']);
         $router->addRoute('GET', '/faq', [$homeController, "faq"]);
         $router->addRoute('GET', '/showcase', [$homeController, "showcase"]);
+
+        $dashboardController = $container->get(\App\Controllers\DashboardController::class);
+        $router->addRoute('GET', '/dashboard', [$dashboardController, "index"]);
+        $router->addRoute('POST', '/dashboard', [$dashboardController, "update"])
+            ->addMiddleware([$authMiddleware, 'handleAdmin']);
 
         $profileController = $container->get(ProfileController::class);
         $router->addRoute('GET', '/profile', [$profileController, "index"]);

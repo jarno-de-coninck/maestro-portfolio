@@ -39,8 +39,11 @@ class ServiceProvider implements ServiceProviderInterface
 
         $gradeRepository = new GradeRepository($database);
 
-        $homeController = new HomeController($responseFactory, $gradeRepository);
+        $homeController = new HomeController($responseFactory);
         $container->set(HomeController::class, $homeController);
+
+        $dashboardController = new \App\Controllers\DashboardController($responseFactory, $gradeRepository);
+        $container->set(\App\Controllers\DashboardController::class, $dashboardController);
 
         $blogRepository = new BlogRepository($database);
 
